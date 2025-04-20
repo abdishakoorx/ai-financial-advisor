@@ -1,103 +1,151 @@
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import Markdown from "react-markdown";
+import BudgetChart from "@/components/BudgetChart";
+import { toast } from "sonner";
+import { saveToHistory } from "./services/historyServices";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const router = useRouter();
+  const [query, setQuery] = useState("");
+  const [response, setResponse] = useState("");
+  const [budgetData, setBudgetData] = useState<Record<string, number> | null>(
+    null
+  );
+  const [isLoading, setIsLoading] = useState(false);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!query.trim()) {
+      toast.error("Error", {
+        description: "Please enter a financial question",
+      });
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/query`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ query }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to fetch response");
+      }
+
+      const data = await res.json();
+      setResponse(data.response);
+
+      if (
+        data.budget_breakdown &&
+        Object.keys(data.budget_breakdown).length > 0
+      ) {
+        setBudgetData(data.budget_breakdown);
+      } else {
+        setBudgetData(null);
+      }
+
+      // Save to localStorage
+      saveToHistory({
+        query,
+        response: data.response,
+        timestamp: new Date().toISOString(),
+        budgetBreakdown: data.budget_breakdown,
+      });
+
+      router.push("/history")
+
+    } catch (error) {
+      console.error("Error:", error);
+      toast.error("Error", {
+        description: "Failed to get advice. Please try again.",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const exampleQueries = [
+    "How should I budget for a $60,000 salary in Austin with $25,000 in student loans?",
+    "What's the best way to save for retirement if I'm 35 and haven't started yet?",
+    "How can I pay off $10,000 in credit card debt while earning $48,000 a year?",
+    "What should my investment strategy be as a 42-year-old planning to retire at 65?",
+    "How do I create a budget for my first apartment with a roommate?",
+  ];
+
+  return (
+    <main className="container mx-auto p-4 max-w-4xl">
+      <form onSubmit={handleSubmit} className="space-y-6 mt-16">
+        <div className="space-y-2">
+          <label htmlFor="query" className="text-lg font-medium">
+            Ask your financial question:
+          </label>
+          <Textarea
+            id="query"
+            placeholder="Example: How should I budget for a Kes 60,000 salary in Nakuru with Kes 25,000 in student loans?"
+            className="min-h-[120px]"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+
+        <Button type="submit" className="w-full cursor-pointer hover:bg-emerald-600" disabled={isLoading}>
+          {isLoading ? "Analyzing..." : "Get Financial Advice"}
+        </Button>
+      </form>
+
+      <div className="mt-6">
+        <h2 className="text-lg font-medium mb-2">Example questions:</h2>
+        <div className="flex flex-wrap gap-2">
+          {exampleQueries.map((example, index) => (
+            <button
+              key={index}
+              className="text-sm bg-slate-100 hover:bg-slate-200 rounded px-3 py-1 transition-colors cursor-pointer"
+              onClick={() => setQuery(example)}
+            >
+              {example}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {response && (
+        <Card className="mt-8">
+          <CardHeader>
+            <CardTitle>Financial Advice</CardTitle>
+            <CardDescription>Based on your query: {query}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            {budgetData && (
+              <div className="mb-8">
+                <h3 className="text-lg font-medium mb-4">Budget Breakdown</h3>
+                <div className="h-80">
+                  <BudgetChart data={budgetData} />
+                </div>
+              </div>
+            )}
+            <div className="prose prose-sm max-w-none">
+              <Markdown>{response}</Markdown>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+    </main>
   );
 }
