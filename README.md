@@ -1,7 +1,7 @@
 # Personal Finance Advisor
 A full-stack application that provides personalized financial advice using Next.js, FastAPI, and Google Gemini AI.
 
-![Personal Finance Advisor App](./screenshots/homepage-lg.png)
+[Personal Finance Advisor App]()
 
 ## Features
 - Ask questions about budgeting, debt management, savings, and investments
@@ -19,28 +19,28 @@ A full-stack application that provides personalized financial advice using Next.
 
 ### Homepage
 <div align="center">
-  <img src="./screenshots/homepage-lg.png" alt="Homepage (Desktop)" width="600"/>
+  <img src="/public/screenshots/homepage-lg.png" alt="Homepage (Desktop)" width="600"/>
   <p><em>Homepage - Desktop View</em></p>
   
-  <img src="./screenshots/homepage-sm.png" alt="Homepage (Mobile)" width="300"/>
+  <img src="/public/screenshots/homepage-sm.png" alt="Homepage (Mobile)" width="300"/>
   <p><em>Homepage - Mobile View</em></p>
 </div>
 
 ### History Page
 <div align="center">
-  <img src="./screenshots/history-lg.png" alt="History Page (Desktop)" width="600"/>
+  <img src="/public/screenshots/history-lg.png" alt="History Page (Desktop)" width="600"/>
   <p><em>History Page - Desktop View</em></p>
   
-  <img src="./screenshots/history-sm.png" alt="History Page (Mobile)" width="300"/>
+  <img src="/public/screenshots/history-sm.png" alt="History Page (Mobile)" width="300"/>
   <p><em>History Page - Mobile View</em></p>
 </div>
 
 ### About Page
 <div align="center">
-  <img src="./screenshots/about-lg.png" alt="About Page (Desktop)" width="600"/>
+  <img src="/public/screenshots/about-lg.png" alt="About Page (Desktop)" width="600"/>
   <p><em>About Page - Desktop View</em></p>
   
-  <img src="./screenshots/about-sm.png" alt="About Page (Mobile)" width="300"/>
+  <img src="/public/screenshots/about-sm.png" alt="About Page (Mobile)" width="300"/>
   <p><em>About Page - Mobile View</em></p>
 </div>
 
@@ -93,29 +93,37 @@ A full-stack application that provides personalized financial advice using Next.
    ```
 4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
+
 ## Prompt Engineering
 The application uses a detailed prompt to generate personalized financial advice:
-```
 I need you to act as a professional financial advisor and provide detailed, personalized financial advice based on the following query:
 "{user_query}"
+
 Provide clear, actionable financial advice with:
+
 ## FINANCIAL SNAPSHOT
 - Quick assessment of the current situation
 - Key priorities based on their query
+
 ## BUDGET BREAKDOWN
 - Create a practical monthly budget with specific amounts
 - Focus on essential categories relevant to their situation
 - Use actual numbers if income is mentioned, otherwise use percentages
+
 ## ACTION PLAN
-- 3-5 specific, immediate steps they should take
+- 3–5 specific, immediate steps they should take
 - Include exact dollar amounts and timeframes
 - Recommend free tools/apps to help implementation
-## NEXT LEVEL STRATEGIES
-- 2-3 advanced tactics to accelerate their financial progress
+
+## NEXT-LEVEL STRATEGIES
+- 2–3 advanced tactics to accelerate their financial progress
 - Specific investment recommendations based on their goals
 - One unique insight most advisors wouldn't mention
+
 Format your response with clear headings, bullet points, and minimal text. Be conversational and encouraging.
+
 At the end, include a simple budget breakdown formatted exactly like this:
+
 BUDGET_DATA
 Housing: 30
 Food: 15
@@ -125,8 +133,9 @@ Insurance: 10
 Debt: 15
 Savings: 10
 Other: 5
+
 Adjust categories and percentages based on their situation. The percentages must add up to 100%.
-```
+
 
 ## Project Structure
 - `/app` - Next.js pages and components
