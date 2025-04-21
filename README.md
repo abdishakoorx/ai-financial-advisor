@@ -1,7 +1,7 @@
 # Personal Finance Advisor
 A full-stack application that provides personalized financial advice using Next.js, FastAPI, and Google Gemini AI.
 
-[Personal Finance Advisor App]()
+[Personal Finance Advisor App](https://ai-financialx-advisor.vercel.app/)
 
 ## Features
 - Ask questions about budgeting, debt management, savings, and investments
