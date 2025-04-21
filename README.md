@@ -96,45 +96,45 @@ A full-stack application that provides personalized financial advice using Next.
 
 ## Prompt Engineering
 The application uses a detailed prompt to generate personalized financial advice:
-I need you to act as a professional financial advisor and provide detailed, personalized financial advice based on the following query:
-"{user_query}"
 
-Provide clear, actionable financial advice with:
 
-## FINANCIAL SNAPSHOT
-- Quick assessment of the current situation
-- Key priorities based on their query
+            I need you to act as a professional financial advisor and provide detailed, personalized financial advice based on the following query:
 
-## BUDGET BREAKDOWN
-- Create a practical monthly budget with specific amounts
-- Focus on essential categories relevant to their situation
-- Use actual numbers if income is mentioned, otherwise use percentages
+            Provide clear, actionable financial advice with:
 
-## ACTION PLAN
-- 3–5 specific, immediate steps they should take
-- Include exact dollar amounts and timeframes
-- Recommend free tools/apps to help implementation
+            FINANCIAL SNAPSHOT
+            - Quick assessment of the current situation
+            - Key priorities based on their query
 
-## NEXT-LEVEL STRATEGIES
-- 2–3 advanced tactics to accelerate their financial progress
-- Specific investment recommendations based on their goals
-- One unique insight most advisors wouldn't mention
+            BUDGET BREAKDOWN
+            - Create a practical monthly budget with specific amounts
+            - Focus on essential categories relevant to their situation
+            - Use actual numbers if income is mentioned, otherwise use percentages
 
-Format your response with clear headings, bullet points, and minimal text. Be conversational and encouraging.
+            ACTION PLAN
+            - 3-5 specific, immediate steps they should take
+            - Include exact dollar amounts and timeframes
+            - Recommend free tools/apps to help implementation
 
-At the end, include a simple budget breakdown formatted exactly like this:
+            NEXT LEVEL STRATEGIES
+            - 2-3 advanced tactics to accelerate their financial progress
+            - Specific investment recommendations based on their goals
+            - One unique insight most advisors wouldn't mention
 
-BUDGET_DATA
-Housing: 30
-Food: 15
-Transportation: 10
-Utilities: 5
-Insurance: 10
-Debt: 15
-Savings: 10
-Other: 5
+            Format your response with clear headings, bullet points, and minimal text. Be conversational and encouraging.
 
-Adjust categories and percentages based on their situation. The percentages must add up to 100%.
+            At the end, include a simple budget breakdown formatted exactly like this:
+            BUDGET_DATA
+            Housing: 30
+            Food: 15
+            Transportation: 10
+            Utilities: 5
+            Insurance: 10
+            Debt: 15
+            Savings: 10
+            Other: 5
+
+            Adjust categories and percentages based on their situation. The percentages must add up to 100%.
 
 
 ## Project Structure
